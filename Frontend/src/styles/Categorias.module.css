@@ -1,0 +1,60 @@
+.container {
+  max-width: 600px; /* Ajusta el ancho según sea necesario */
+  margin: 0 auto; /* Centrar el contenedor */
+  padding: 20px; /* Espaciado interno */
+  border: 1px solid #ccc; /* Borde del contenedor */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+h2 {
+  font-size: 24px; /* Tamaño del texto del título */
+  margin-bottom: 20px; /* Espaciado inferior */
+  text-align: center; /* Centrar el texto */
+}
+
+.form {
+  margin-bottom: 20px; /* Espacio debajo del formulario */
+}
+
+label {
+  display: block; /* Hacer que la etiqueta ocupe toda la línea */
+  margin-bottom: 8px; /* Espaciado inferior */
+  font-weight: bold; /* Negrita */
+}
+
+input {
+  width: 100%; /* Ancho completo */
+  padding: 10px; /* Espaciado interno */
+  margin-bottom: 10px; /* Espaciado inferior */
+  border: 1px solid #ccc; /* Borde */
+  border-radius: 4px; /* Bordes redondeados */
+}
+
+button {
+  padding: 10px 15px; /* Espaciado interno */
+  background-color: #007bff; /* Color de fondo */
+  color: white; /* Color del texto */
+  border: none; /* Sin borde */
+  border-radius: 4px; /* Bordes redondeados */
+  cursor: pointer; /* Cambiar cursor a mano */
+}
+
+button:hover {
+  background-color: #0056b3; /* Color de fondo al pasar el mouse */
+}
+
+.categoryItem {
+  display: flex; /* Usar flexbox para alinear los elementos */
+  justify-content: space-between; /* Espacio entre los elementos */
+  align-items: center; /* Centrar verticalmente */
+  padding: 10px; /* Espaciado interno */
+  border: 1px solid #ccc; /* Borde */
+  border-radius: 4px; /* Bordes redondeados */
+  margin-bottom: 10px; /* Espaciado inferior */
+}
+
+.error {
+  color: red; /* Color del texto de error */
+  margin-bottom: 20px; /* Espaciado inferior */
+}

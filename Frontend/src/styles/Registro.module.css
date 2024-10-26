@@ -1,0 +1,53 @@
+:root {
+  --primary-color: #007bff;
+  --primary-color-hover: #0056b3;
+  --error-color: red;
+  --primary-color: #007bff;
+  --primary-color-hover: #0056b3;
+  --secondary-color: hsl(0, 76%, 23%);
+  --background-light: #1d1c1c;
+  --border-color: #0ba443;
+  --box-shadow-color: rgba(0, 0, 0, 0.1);
+  --text-color: #000;
+  --error-color: red;
+  color: white;
+}
+
+.container {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  box-shadow: 0 2px 10px var(--box-shadow-color);
+  background-color: var(--background-color);
+}
+
+.container h2 {
+  color: white;
+}
+.field {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.error {
+  color: var(--error-color);
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--primary-color-hover);
+}

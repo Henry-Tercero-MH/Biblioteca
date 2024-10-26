@@ -1,0 +1,76 @@
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  margin: 0;
+}
+
+/* Contenedor principal */
+#root {
+  display: flex;
+  flex-direction: column; /* Cambia a columna para centrar el contenido verticalmente */
+  justify-content: center; /* Centrar verticalmente */
+  align-items: center; /* Centrar horizontalmente */
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: black;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  gap: 10px;
+  color: white;
+}
+
+/* Título */
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: #4a4a4a;
+}
+
+/* Navegación */
+nav {
+  margin: 1.5rem 0;
+  display: flex; /* Asegúrate de que los enlaces de navegación se alineen correctamente */
+  gap: 15px; /* Espaciado entre enlaces */
+}
+
+/* Enlaces de navegación */
+nav a {
+  text-decoration: none;
+  color: #61dafb; /* Color del texto */
+  font-size: 1.2rem; /* Tamaño de fuente */
+  padding: 0.5rem 1rem; /* Espaciado interno */
+  border-radius: 4px; /* Bordes redondeados */
+  transition: background-color 0.3s, color 0.3s; /* Transiciones suaves */
+}
+
+/* Efecto hover para enlaces */
+nav a:hover {
+  background-color: #61dafb; /* Color de fondo al pasar el mouse */
+  color: white; /* Color del texto al pasar el mouse */
+}
+
+/* Efecto hover para enlaces activos */
+nav a.active {
+  background-color: #646cff; /* Color de fondo para enlaces activos */
+  color: white; /* Color del texto para enlaces activos */
+}
+
+/* Estilo de las tarjetas */
+.card {
+  display: flex;
+  justify-content: space-between; /* Espaciado entre elementos de la tarjeta */
+  padding: 2em; /* Espaciado interno de la tarjeta */
+  margin: 1em 0; /* Espaciado externo de la tarjeta */
+
+  border-radius: 8px; /* Bordes redondeados de la tarjeta */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra de la tarjeta */
+}
+
+/* Enlace de documentación */
+.read-the-docs {
+  color: #888; /* Color del enlace de documentación */
+}

@@ -194,6 +194,68 @@ app.delete("/categorias/:id", authorize(["administrador"]), (req, res) => {
     res.send({ message: "Categoría eliminada" });
   });
 });
+// Agregar un nuevo préstamo
+app.post("/prestamos", (req, res) => {
+  const { usuario_id, libro_id, fecha_prestamo } = req.body;
+
+  db.query(
+    "INSERT INTO Prestamos (usuario_id, libro_id, fecha_prestamo, estado) VALUES (?, ?, ?, 'prestado')",
+    [usuario_id, libro_id, fecha_prestamo],
+    (err, result) => {
+      if (err) return res.status(500).send(err);
+      res
+        .status(201)
+        .send({ message: "Préstamo creado", prestamo_id: result.insertId });
+    }
+  );
+});
+
+// Obtener todos los préstamos
+app.get("/prestamos", (req, res) => {
+  db.query("SELECT * FROM Prestamos", (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.json(results);
+  });
+});
+
+// Obtener todos los préstamos de un usuario específico
+app.get("/prestamos/usuario/:usuario_id", (req, res) => {
+  const { usuario_id } = req.params;
+
+  db.query(
+    "SELECT * FROM Prestamos WHERE usuario_id = ?",
+    [usuario_id],
+    (err, results) => {
+      if (err) return res.status(500).send(err);
+      res.json(results);
+    }
+  );
+});
+
+// Actualizar estado a devuelto (actualizar estado y fecha_devolucion)
+app.put("/prestamos/:id/devolver", (req, res) => {
+  const { id } = req.params;
+  const { fecha_devolucion } = req.body;
+
+  db.query(
+    "UPDATE Prestamos SET estado = 'devuelto', fecha_devolucion = ? WHERE prestamo_id = ?",
+    [fecha_devolucion, id],
+    (err) => {
+      if (err) return res.status(500).send(err);
+      res.send({ message: "Préstamo actualizado como devuelto" });
+    }
+  );
+});
+
+// Eliminar un préstamo
+app.delete("/prestamos/:id", (req, res) => {
+  const { id } = req.params;
+
+  db.query("DELETE FROM Prestamos WHERE prestamo_id = ?", [id], (err) => {
+    if (err) return res.status(500).send(err);
+    res.send({ message: "Préstamo eliminado" });
+  });
+});
 
 // Iniciar el servidor
 app.listen(PORT, () => {

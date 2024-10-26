@@ -7,6 +7,27 @@ const Libros = () => {
   const [categorias, setCategorias] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [prestamos, setPrestamos] = useState([]); // Estado para los préstamos
+  const fetchPrestamos = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/prestamos?usuario_id=${
+          JSON.parse(atob(localStorage.getItem("token").split(".")[1]))
+            .usuario_id
+        }`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      setPrestamos(response.data);
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data || "Error al cargar los préstamos.");
+    }
+  };
+
   const [newLibro, setNewLibro] = useState({
     titulo: "",
     autor: "",
@@ -110,11 +131,38 @@ const Libros = () => {
           },
         }
       );
-      setPrestamoLibroId(libroId);
-      fetchLibros();
+      fetchLibros(); // Actualiza la lista de libros
+      fetchPrestamos(); // Actualiza la lista de préstamos
     } catch (err) {
       console.error(err);
       setError(err.response?.data || "Error al realizar el préstamo.");
+    }
+  };
+
+  const handleDevolucion = async (libroId) => {
+    try {
+      // Verifica si el libro está prestado
+      const prestamo = prestamos.find((p) => p.libro_id === libroId);
+      if (!prestamo) {
+        setError("El libro no está prestado.");
+        return;
+      }
+
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/prestamos/${prestamo.prestamo_id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      // Actualiza la lista de libros y préstamos
+      fetchLibros();
+      fetchPrestamos();
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data || "Error al devolver el libro.");
     }
   };
 
@@ -184,6 +232,7 @@ const Libros = () => {
     fetchLibros();
     fetchCategorias();
     checkUserRole();
+    fetchPrestamos();
   }, []);
 
   return (
@@ -281,43 +330,62 @@ const Libros = () => {
                 <th>Fecha de Publicación</th>
                 <th>Editorial</th>
                 <th>Idioma</th>
+                <th>En Préstamo</th>
                 {isAdmin && <th>Acciones</th>}
+                {!isAdmin && <th>Acciones</th>}
               </tr>
             </thead>
             <tbody>
               {libros.length === 0 ? (
                 <tr>
-                  <td colSpan={isAdmin ? 6 : 5}>No hay libros disponibles.</td>
+                  <td colSpan={isAdmin ? 7 : 6}>No hay libros disponibles.</td>
                 </tr>
               ) : (
-                libros.map((libro) => (
-                  <tr key={libro.libro_id}>
-                    <td>{libro.titulo}</td>
-                    <td>{libro.autor}</td>
-                    <td>{formatDate(libro.fecha_publicacion)}</td>{" "}
-                    {/* Formato de fecha */}
-                    <td>{libro.editorial}</td>
-                    <td>{libro.idioma}</td>
-                    {isAdmin ? (
-                      <td>
-                        <button onClick={() => handleEditLibro(libro)}>
-                          Editar
-                        </button>
-                        <button
-                          onClick={() => handleDeleteLibro(libro.libro_id)}
-                        >
-                          Eliminar
-                        </button>
-                      </td>
-                    ) : (
-                      <td>
-                        <button onClick={() => handlePrestamo(libro.libro_id)}>
-                          Prestar
-                        </button>
-                      </td>
-                    )}
-                  </tr>
-                ))
+                libros.map((libro) => {
+                  const enPrestamo = prestamos.some(
+                    (prestamo) => prestamo.libro_id === libro.libro_id
+                  );
+                  return (
+                    <tr
+                      key={libro.libro_id}
+                      className={enPrestamo ? styles.prestamo : ""}
+                    >
+                      <td>{libro.titulo}</td>
+                      <td>{libro.autor}</td>
+                      <td>{formatDate(libro.fecha_publicacion)}</td>
+                      <td>{libro.editorial}</td>
+                      <td>{libro.idioma}</td>
+                      <td>{enPrestamo ? "Sí" : "No"}</td>
+                      {isAdmin ? (
+                        <td>
+                          <button onClick={() => handleEditLibro(libro)}>
+                            Editar
+                          </button>
+                          <button
+                            onClick={() => handleDeleteLibro(libro.libro_id)}
+                          >
+                            Eliminar
+                          </button>
+                        </td>
+                      ) : (
+                        <td>
+                          <button
+                            onClick={() => handlePrestamo(libro.libro_id)}
+                            disabled={enPrestamo}
+                          >
+                            Prestar
+                          </button>
+                          <button
+                            onClick={() => handleDevolucion(libro.libro_id)}
+                            disabled={!enPrestamo}
+                          >
+                            Devolver
+                          </button>
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

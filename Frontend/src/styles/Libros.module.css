@@ -71,3 +71,7 @@ select {
   background-color: rgba(0, 0, 0, 0.889);
   border-radius: 5px 5px;
 }
+/* src/styles/Libros.module.css */
+.prestamo {
+  background-color: #064378; /* Cambia el color de fondo según tus necesidades */
+}
